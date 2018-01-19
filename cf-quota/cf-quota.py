@@ -12,18 +12,18 @@ prod_space = os.getenv("PROD_PCF_SPACE", "pz-prod")
 pz_spaces = [phase_one_space, phase_two_space, prod_space]
 pz_space_guids = {}
 
-def cf_api_auth():
 
+def cf_api_auth():
 
     """Use the cf shell command to get the account's temporary auth token
        and store them as an authorization header for later use
     """
     cf_oauth_token = check_output(["cf", "oauth-token"]).strip("\n")
     headers = {"Cookie": "", "Authorization": cf_oauth_token}
-    return (headers)
+    return headers
+
 
 def get_all_spaces(headers):
-
 
     """Use the cf API to get each space guid
 
@@ -31,19 +31,18 @@ def get_all_spaces(headers):
       headers (dict): A cookie and auth header containing the cf auth token
 
     Returns:
-      dict: A dictionary containg all cf space guids
+      dict: A dictionary containing all cf space guids
     """
     all_spaces = requests.get("{}/v2/spaces".format(base_url), headers=headers).json()
     # Collect all of the apps and their guid
     for idx in all_spaces["resources"]:
         for space_name in pz_spaces:
-          if space_name == idx["entity"]["name"]:
-              pz_space_guids[space_name] = idx["metadata"]["guid"]
+            if space_name == idx["entity"]["name"]:
+                pz_space_guids[space_name] = idx["metadata"]["guid"]
     return pz_space_guids
 
-def get_space_quotas(headers, pz_space_guids):
-    # type: (object, object) -> object
 
+def get_space_quotas(headers, pz_space_guids):
 
     """Get quotas for each pz space
 
@@ -56,13 +55,14 @@ def get_space_quotas(headers, pz_space_guids):
     """
     space_quotas = {}
     for space_name in pz_space_guids:
-      space_quotas[space_name] = requests.get("{}/v2/spaces/{}".format(base_url, pz_space_guids.get(space_name)), headers=headers).json()
+        space_quotas[space_name] = requests.get("{}/v2/spaces/{}".format(base_url, pz_space_guids.get(space_name)), headers=headers).json()
     for space in space_quotas:
         if space_quotas[space]["entity"]["space_quota_definition_guid"] is not None:
             raise SystemExit(1, "Quota set for space: "+space)
         else:
             raise SystemExit(0)
-    return (space_quotas)
+    return space_quotas
+
 
 if __name__ == '__main__':
     headers = cf_api_auth()
