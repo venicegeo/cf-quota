@@ -14,6 +14,13 @@ node {
 		}
 
 	stage("Get quotas") {
-	    python cf-quota/cf-quota.py
+            withEnv(["CF_HOME=.cf"]) {
+                withCredentials([
+                  [$class: 'UsernamePasswordMultiBinding', credentialsId: "${env.PCF_CREDS}", usernameVariable: "CFUSER", passwordVariable: "CFPASS"]
+            ]) {
+		sh "cf api ${env.PCF_API_ENDPOINT}"
+		sh "cf auth ${CFUSER} ${CFPASS}"
+		sh "cf target -o ${env.PCF_ORG} -s ${env.PHASE_ONE_PCF_SPACE}"
+	        sh "python cf-quota/cf-quota.py"
 	}
 }
