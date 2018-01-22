@@ -11,6 +11,10 @@ node {
     }
   }
 
+  stage("debug" {
+    sh "pwd"
+    sh "ls -al"
+  }
   stage("Get quotas") {
     withEnv(["CF_HOME=.cf"]) {
       withCredentials([
