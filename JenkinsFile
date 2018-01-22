@@ -21,6 +21,7 @@ node {
     } else {
       git url: "${env.GIT_URL}", branch: "${env.GIT_BRANCH}"
     }
+    sh "env"
   }
 
   stage("Get quotas") {
