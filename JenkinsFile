@@ -11,7 +11,7 @@ node {
     }
   }
 
-  stage("debug" {
+  stage("debug") {
     sh "pwd"
     sh "ls -al"
   }
