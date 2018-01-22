@@ -5,8 +5,10 @@ node {
   stage("Setup") {
     deleteDir()
     if(env.GITLAB_CREDS) {
+      sh "echo 'Gitlab Creds'"
       git url: "${env.GIT_URL}", branch: "${env.GIT_BRANCH}", credentialsId: "${env.GITLAB_CREDS}"
     } else {
+      sh "echo 'no gitlab'"
       git url: "${env.GIT_URL}", branch: "${env.GIT_BRANCH}"
     }
   }
