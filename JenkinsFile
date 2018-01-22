@@ -4,6 +4,9 @@ node {
   def root = pwd()
   stage("Setup") {
     deleteDir()
+    if(!env.GIT_BRANCH) {
+      env.GIT_BRANCH = "master"
+    }
     if(env.GITLAB_CREDS) {
       git url: "${env.GIT_URL}", branch: "${env.GIT_BRANCH}", credentialsId: "${env.GITLAB_CREDS}"
     } else {
