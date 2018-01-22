@@ -5,12 +5,17 @@ import requests
 import os
 from subprocess import check_output
 
-base_url = os.getenv("PCF_API_ENDPOINT", "https://api.system.dev.east.paas.geointservices.io")
-phase_one_space = os.getenv("PHASE_ONE_PCF_SPACE", "pz-int")
-phase_two_space = os.getenv("PHASE_TWO_PCF_SPACE", "pz-test")
-prod_space = os.getenv("PROD_PCF_SPACE", "pz-prod")
+# Get environment variables from Jenkins for API url and spaces
+base_url = os.getenv("PCF_API_ENDPOINT")
+phase_one_space = os.getenv("PHASE_ONE_PCF_SPACE")
+phase_two_space = os.getenv("PHASE_TWO_PCF_SPACE")
+prod_space = os.getenv("PROD_PCF_SPACE")
 pz_spaces = [phase_one_space, phase_two_space, prod_space]
 pz_space_guids = {}
+
+for var in pz_spaces:
+    if var is None:
+        raise SystemExit(1, "No environment variables set for")
 
 
 def cf_api_auth():
