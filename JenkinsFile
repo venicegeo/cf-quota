@@ -9,14 +9,12 @@ node {
       git url: "${env.GIT_URL}", branch: "${env.GIT_BRANCH}", credentialsId: "${env.GITLAB_CREDS}"
     } else {
       sh "echo 'no gitlab'"
+      sh "pwd"
+      sh "ls -al"
       git url: "${env.GIT_URL}", branch: "${env.GIT_BRANCH}"
     }
   }
 
-  stage("debug") {
-    sh "pwd"
-    sh "ls -al"
-  }
   stage("Get quotas") {
     withEnv(["CF_HOME=.cf"]) {
       withCredentials([
