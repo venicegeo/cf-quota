@@ -23,7 +23,10 @@ def cf_api_auth():
     """Use the cf shell command to get the account's temporary auth token
        and store them as an authorization header for later use
     """
-    cf_oauth_token = check_output(["cf", "oauth-token"]).strip("\n")
+    try:
+        cf_oauth_token = check_output(["cf", "oauth-token"]).strip("\n")
+    except CalledProcessError as error:
+        raise SystemExit(error.returncode, error.output)
     headers = {"Cookie": "", "Authorization": cf_oauth_token}
     return headers
 
@@ -60,7 +63,10 @@ def get_space_quotas(headers, pz_space_guids):
     """
     space_quotas = {}
     for space_name in pz_space_guids:
-        space_quotas[space_name] = requests.get("{}/v2/spaces/{}".format(base_url, pz_space_guids.get(space_name)), headers=headers).json()
+        try:
+            space_quotas[space_name] = requests.get("{}/v2/spaces/{}".format(base_url, pz_space_guids.get(space_name)), headers=headers).json()
+        except CalledProcessError as error:
+            raise SystemExit(error.returncode, error.output)
     for space in space_quotas:
         if space_quotas[space]["entity"]["space_quota_definition_guid"] is not None:
             raise SystemExit(1, "Quota set for space: "+space)
