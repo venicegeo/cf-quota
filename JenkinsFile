@@ -7,6 +7,15 @@ node {
     if(!env.GIT_BRANCH) {
       env.GIT_BRANCH = "master"
     }
+    if(!env.PHASE_ONE_PCF_SPACE) {
+      env.PHASE_ONE_CF_SPACE = "pz-int"
+    }
+    if(!env.PHASE_TWO_PCF_SPACE) {
+      env.PHASE_TWO_PCF_SPACE = "pz-dev"
+    }
+    if(!env.PROD_PCF_SPACE) {
+      env.PROD_PCF_SPACE = "pz-prod"
+    }
     if(env.GITLAB_CREDS) {
       git url: "${env.GIT_URL}", branch: "${env.GIT_BRANCH}", credentialsId: "${env.GITLAB_CREDS}"
     } else {
