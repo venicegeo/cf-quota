@@ -8,7 +8,7 @@ node {
       env.GIT_BRANCH = "master"
     }
     if(!env.PHASE_ONE_PCF_SPACE) {
-      env.PHASE_ONE_CF_SPACE = "pz-int"
+      env.PHASE_ONE_PCF_SPACE = "pz-int"
     }
     if(!env.PHASE_TWO_PCF_SPACE) {
       env.PHASE_TWO_PCF_SPACE = "pz-dev"
@@ -21,7 +21,6 @@ node {
     } else {
       git url: "${env.GIT_URL}", branch: "${env.GIT_BRANCH}"
     }
-    sh "env"
   }
 
   stage("Get quotas") {
