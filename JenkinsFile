@@ -15,6 +15,9 @@ node {
   }
 
   stage("Get quotas") {
+    if(!fileExists('.cf')) {
+      sh "mkdir -p .cf"
+    }
     withEnv(["CF_HOME=.cf"]) {
       withCredentials([
         [$class: 'UsernamePasswordMultiBinding', credentialsId: "${env.L2-PCF_Creds}", usernameVariable: "CFUSER", passwordVariable: "CFPASS"]
