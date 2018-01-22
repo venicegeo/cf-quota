@@ -11,7 +11,7 @@ node {
       sh "echo 'no gitlab'"
       sh "pwd"
       sh "ls -al"
-      git url: "${env.GIT_URL}", branch: "${env.GIT_BRANCH}"
+      git url: "${env.GIT_URL}", branch: "*/master"
     }
   }
 
