@@ -49,6 +49,7 @@ def get_all_spaces(headers):
       dict: A dictionary containing all cf space guids
     """
     all_spaces = requests.get("https://{}/v2/spaces".format(base_url), headers=headers).json()
+    pz_space_guids = {}
     # Collect all of the apps and their guid
     for idx in all_spaces["resources"]:
         for space_name in pz_spaces:
