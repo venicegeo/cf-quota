@@ -24,6 +24,7 @@ node {
   }
 
   stage("Get quotas") {
+    sh "env"
     if(!fileExists(".cf")) {
       sh "mkdir -p .cf"
     }
