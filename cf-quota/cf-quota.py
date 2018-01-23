@@ -41,7 +41,7 @@ def get_all_spaces(headers):
     Returns:
       dict: A dictionary containing all cf space guids
     """
-    all_spaces = requests.get("{}/v2/spaces".format(base_url), headers=headers).json()
+    all_spaces = requests.get("https://{}/v2/spaces".format(base_url), headers=headers).json()
     # Collect all of the apps and their guid
     for idx in all_spaces["resources"]:
         for space_name in pz_spaces:
@@ -64,7 +64,7 @@ def get_space_quotas(headers, pz_space_guids):
     space_quotas = {}
     for space_name in pz_space_guids:
         try:
-            space_quotas[space_name] = requests.get("{}/v2/spaces/{}".format(base_url, pz_space_guids.get(space_name)), headers=headers).json()
+            space_quotas[space_name] = requests.get("https://{}/v2/spaces/{}".format(base_url, pz_space_guids.get(space_name)), headers=headers).json()
         except CalledProcessError as error:
             raise SystemExit(error.returncode, error.output)
     for space in space_quotas:
@@ -79,3 +79,4 @@ if __name__ == '__main__':
     headers = cf_api_auth()
     pz_space_guids = get_all_spaces(headers=headers)
     get_space_quotas(headers=headers, pz_space_guids=pz_space_guids)
+
