@@ -70,6 +70,7 @@ def get_space_quotas(headers, pz_space_guids):
     """
     space_quotas = {}
     for space_name in pz_space_guids:
+        print "Getting quotas for space "+space_name
         try:
             space_quotas[space_name] = requests.get("https://{}/v2/spaces/{}".format(base_url, pz_space_guids.get(space_name)), headers=headers).json()
         except CalledProcessError as error:
