@@ -71,7 +71,7 @@ def get_space_quotas(headers, pz_space_guids):
         if space_quotas[space]["entity"]["space_quota_definition_guid"] is not None:
             raise SystemExit(1, "Quota set for space: "+space)
         else:
-            raise SystemExit(0)
+            raise SystemExit(0, "No quota set for space: "+space)
     return space_quotas
 
 
