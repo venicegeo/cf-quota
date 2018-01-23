@@ -1,6 +1,13 @@
 #!/usr/bin/env/python
 
 # -*- coding: utf-8 -*-
+
+# Queries the cloudfoundry API and determines whether there are any quota
+# limitations set for the three piazza spaces. Exits with 0 if there are
+# none, or 1 if there are quotas set. This is meant to be used in conjunction
+# with Jenkins, but could be used locally as well if the proper environment
+# variables are set.
+
 import requests
 import os
 from subprocess import check_output
