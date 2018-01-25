@@ -73,18 +73,20 @@ class CFQuery:
                 raise SystemExit(1, "Quota set for space: " + space)
             else:
                 print "No quota set for space: " + space
+
         return space_quotas
 
-  def get_app_logs(self, space, app):
+    def get_app_logs(self, space, app):
 
-      """Get the logs for a particular app
-           Args:
-               space (string): The space the app is in
-               app (string): The app name
+        """Get the logs for a particular app
+             Args:
+                 space (string): The space the app is in
+                 app (string): The app name
 
-           Returns:
-             dict: A dictionary of space quota(s) for each space
-      """
+             Returns:
+               dict: A dictionary of space quota(s) for each space
+        """
 
-      logs = "logs go here"
-      return logs
+        logs = "logs go here"
+
+        return logs
