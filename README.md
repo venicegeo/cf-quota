@@ -1,7 +1,7 @@
-# CF Quotas
+# CF Utilities
 
 This utility is meant to be run from a Jenkins job. It queries the
-cloudfoundry API for any quotas set on an arbitrary space.
+cloudfoundry API for information about your apps.
 
 It uses environment variables already present populate the values
 for the spaces to query, as well as the cloudfoundry API url.
@@ -29,8 +29,12 @@ You need the following environment variables set:
 You can set each of those with `$ export VARIABLE_NAME="somevalue"`.
 
 Then in this directory:
+    $ python
+        from cfutils import CFQuery
+        api_url = "api.system.someorg.com"
+        pzspaces = ["space-one", "space-two", "space-three"]
+        res = CFQuery(api_url).get_space_quotas(pzspaces)
 
-`$ python cf-quota/cf-quota.py`
 
 Which will return:
 
