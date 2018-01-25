@@ -29,6 +29,7 @@ You need the following environment variables set:
 You can set each of those with `$ export VARIABLE_NAME="somevalue"`.
 
 Then in this directory:
+
     $ python
         from cfutils import CFQuery
         api_url = "api.system.someorg.com"
