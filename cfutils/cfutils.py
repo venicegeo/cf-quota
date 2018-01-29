@@ -41,7 +41,7 @@ class Cfutils(object):
            Args:
                endpoint (str): The API endpont to request
            Returns:
-               query (dict): A JSON formatted dictionary of the query response
+               api_request (dict): A JSON formatted dictionary of the query response
         """
 
         self.endpoint = endpoint
@@ -54,7 +54,8 @@ class Cfutils(object):
 
         """Query the CloudFoundry API and get information about all spaces
 
-           Returns (dict): A JSON formatted response with spaces and attributes
+           Returns:
+               all_spaces (dict): A JSON formatted response with spaces and attributes
         """
 
         all_spaces = self.cf_query("spaces")
@@ -68,7 +69,7 @@ class Cfutils(object):
                spaces (list): A list of spaces to query for
 
            Returns:
-             dict: A dictionary of space quota(s) for each space
+               pz_space_guids (dict): A dictionary of space quota(s) for each space
         """
 
         org_spaces = self.get_all_spaces()
@@ -120,7 +121,7 @@ class Cfutils(object):
                  spaces (list): The space or spaces to query
 
              Returns:
-                 app_status (string): A newline formatted string of app name and
+                 app_status (str): A newline formatted string of app name and
                  status.
         """
         self.apps = self.get_all_apps_in_space(spaces)
