@@ -1,10 +1,24 @@
 # CF Utilities
 
-This utility is meant to be run from a Jenkins job. It queries the
-cloudfoundry API for information about your apps.
+CF Utilities provides a Python Wrapper to interact with the Cloudfoundry API.
 
-It uses environment variables already present populate the values
+It can be used with Jenkins using the JenkinsFile, or locally as long as you
+have some version of Python 2 installed.
+
+For Jenkins, it uses environment variables already present to populate the values
 for the spaces to query, as well as the cloudfoundry API url.
+
+## Functionality
+
+This utility currently provides the following:
+
+- A base query utility that takes an endpoint as an argument. It sends OAUTH
+headers automatically for authentication.
+- Query all apps in a space(s) which returns a JSON response from the Cloudfoundry
+API with information about the applications.
+- Query all spaces you're authorized for.
+- Query app status in a space(s).
+- Query if any space quotas are set for a particular space.
 
 ## Jenkins Usage
 Once you've configured your job in Jenkins, this utility requires no
