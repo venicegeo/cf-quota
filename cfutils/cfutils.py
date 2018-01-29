@@ -6,14 +6,16 @@ import requests
 from subprocess import check_output, CalledProcessError
 
 
-class CFQuery:
+class Cfutils(object):
 
     """Provides abstraction, authentication and interaction with the CloudFoundry
        API
 
        Attributes:
            auth_headers (dict): A cookie and token http header
-           url (str): The Cloudfoundry API base url
+           api_url (str): The Cloudfoundry API base url
+           query: (str): The http query to send to the API
+           endpoint: (str): The endpoint to query
     """
     def __init__(self, api_url):
 
@@ -32,6 +34,22 @@ class CFQuery:
             raise SystemExit(error.returncode, error.output)
         self.auth_headers = {"Cookie": "", "Authorization": cf_oauth_token}
 
+    def cf_query(self, endpoint):
+
+        """Constructs a requests query to the specified API endpoint
+
+           Args:
+               endpoint (str): The API endpong to request
+           Returns:
+               query (dict): A JSON formatted dictionary of the query response
+        """
+
+        self.endpoint = endpoint
+        api_request = requests.get("https://{}/v2/{}".format(self.api_url,\
+                self.endpoint), headers=self.auth_headers).json()
+
+        return api_request
+
     def get_all_spaces(self):
 
         """Query the CloudFoundry API and get information about all spaces
@@ -39,8 +57,7 @@ class CFQuery:
            Returns (dict): A JSON formatted response with spaces and attributes
         """
 
-        all_spaces = requests.get("https://{}/v2/spaces".format(self.api_url), headers=self.auth_headers).json()
-
+        all_spaces = self.cf_query("spaces")
         return all_spaces
 
     def get_space_quotas(self, spaces):
@@ -65,7 +82,7 @@ class CFQuery:
         for space_name in pz_space_guids:
             print "Getting quotas for space " + space_name + "..."
             try:
-                space_quotas[space_name] = requests.get("https://{}/v2/spaces/{}".format(self.api_url, pz_space_guids.get(space_name)), headers=self.auth_headers).json()
+                space_quotas[space_name] = self.cf_query("spaces/{}".format(pz_space_guids.get(space_name)))
             except CalledProcessError as error:
                 raise SystemExit(error.returncode, error.output)
         for space in space_quotas:
@@ -73,20 +90,42 @@ class CFQuery:
                 raise SystemExit(1, "Quota set for space: " + space)
             else:
                 print "No quota set for space: " + space
+        return pz_space_guids
 
-        return space_quotas
+    def get_all_apps_in_space(self, spaces):
 
-    def get_app_logs(self, space, app):
-
-        """Get the logs for a particular app
+        """Get all the apps in the specified space
              Args:
-                 space (string): The space the app is in
-                 app (string): The app name
+                 spaces (list): The space or spaces to get apps from
 
              Returns:
-               dict: A dictionary of space quota(s) for each space
+                 apps (dict): A JSON formatted dictionary of all apps in a space
         """
+        apps = {}
+        self.spaces = spaces
+        pz_space_guids = self.get_space_quotas(spaces)
+        for key, value in pz_space_guids.iteritems():
+            endpoint = "spaces/{}/apps".format(value)
+            try:
+                apps[key] = self.cf_query(endpoint)
+            except CalledProcessError as error:
+                raise SystemExit(error.returncode, error.output)
+        print apps
+        return apps
 
-        logs = "logs go here"
+    def get_app_space_status(self, spaces):
 
-        return logs
+        """Get the apps status in a space
+             Args:
+                 spaces (list): The space or spaces to query
+
+             Returns:
+                 app_status (string): A newline formatted string of app name and
+                 status.
+        """
+        self.apps = self.get_all_apps_in_space(spaces)
+        for key in self.apps:
+            print "Space: {}\n".format(key)
+            for i in self.apps[key]["resources"]:
+                print  "{} : {}".format(i["entity"]["name"], i["entity"]["state"])
+
