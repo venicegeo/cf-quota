@@ -39,7 +39,7 @@ class Cfutils(object):
         """Constructs a requests query to the specified API endpoint
 
            Args:
-               endpoint (str): The API endpong to request
+               endpoint (str): The API endpont to request
            Returns:
                query (dict): A JSON formatted dictionary of the query response
         """
