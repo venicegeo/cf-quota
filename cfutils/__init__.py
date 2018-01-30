@@ -2,4 +2,4 @@
 
 # -*- coding: utf-8 -*-
 
-from cfquery import CFQuery
+from cfutils import Cfutils
