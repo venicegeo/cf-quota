@@ -33,7 +33,7 @@ node {
       ]) {
         sh "cf api ${env.PCF_API_ENDPOINT}"
         sh "cf auth ${CFUSER} ${CFPASS}"
-        sh "python cf-quota/cf-quota.py"
+        sh "python cf_get_quotas.py"
         sh "cf logout"
       }
     }
