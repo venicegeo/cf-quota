@@ -33,25 +33,45 @@ variables needed to:
 6. If any are found, the utility exits with a 1, indicating failure
 
 ## Using Locally
-You need the following environment variables set:
 
-- `PCF_API_ENDPOINT`: 'api.yourpcfendpoing.io'
-- `PHASE_ONE_PCF_SPACE`: 'space-one''
-- `PHASE_TWO_PCF_SPACE`: 'space-two'
-- `PROD_PCF_SPACE`: 'space-three'
+First, import `cfutils`:
 
-You can set each of those with `$ export VARIABLE_NAME="somevalue"`.
+        from cfutils import Cfutils as cf
 
-    from cfutils import Cfquery as cf
-    cf("api.system.dev.yourorg.com").cf_query("spaces")
+For convenience, set your `api_url` and space names `spaces`:
 
-Then in this directory:
-
-    $ python
-        from cfutils import CFQuery
         api_url = "api.system.someorg.com"
-        pzspaces = ["space-one", "space-two", "space-three"]
-        res = CFQuery(api_url).get_space_quotas(pzspaces)
+        myspaces = ["space-one", "space-two", "space-three"]
+
+### Arbitrary endpoint API queries
+
+*This example queries the services endpoint*
+
+        endpoint = "services"
+        services = cf(api_url).cf_query(endpoint)
+
+        ...
+          {
+            "total_results": 1,
+            "total_pages": 1,
+            "prev_url": null,
+            "next_url": null,
+            "resources": [
+              {
+                "metadata": {
+                  "guid": "1993218f-096d-4216-bf9d-e0f250332dc6",
+                  "url": "/v2/services/1993218f-096d-4216-bf9d-e0f250332dc6",
+                  "created_at": "2016-06-08T16:41:31Z",
+                  "updated_at": "2016-06-08T16:41:26Z"
+                },
+                "entity": {
+                  "label": "label-57",
+                  "provider": null,
+        ...
+
+### Quotas for a space(s)
+
+        quotas = cf.(api_url).get_space_quotas(myspaces)
 
 
 Which will return:
@@ -64,4 +84,17 @@ No quota set for space: space-one
 No quota set for space: space-two
 No quota set for space: space-three
 ```
+
+### Information about all spaces
+
+        spaces = cf(api_url).get_all_spaces()
+
+### All apps in a space
+
+        apps = cf(api_url).get_all_apps_in_space(myspaces)
+
+### App status in a particular space(s)
+
+        app_status = cf(api_url).get_app_space_status(myspaces)
+
 
