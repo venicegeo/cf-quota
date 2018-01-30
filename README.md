@@ -42,6 +42,9 @@ You need the following environment variables set:
 
 You can set each of those with `$ export VARIABLE_NAME="somevalue"`.
 
+    from cfutils import Cfquery as cf
+    cf("api.system.dev.yourorg.com").cf_query("spaces")
+
 Then in this directory:
 
     $ python
