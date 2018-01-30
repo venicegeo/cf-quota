@@ -81,6 +81,7 @@ class Cfutils(object):
                     pz_space_guids[space_name] = idx["metadata"]["guid"]
         space_quotas = {}
         for space_name in pz_space_guids:
+            #@TODO: Remove this print
             print "Getting quotas for space " + space_name + "..."
             try:
                 space_quotas[space_name] = self.cf_query("spaces/{}".format(pz_space_guids.get(space_name)))
@@ -90,6 +91,7 @@ class Cfutils(object):
             if space_quotas[space]["entity"]["space_quota_definition_guid"] is not None:
                 raise SystemExit(1, "Quota set for space: " + space)
             else:
+                #@TODO: Remove this print
                 print "No quota set for space: " + space
         return pz_space_guids
 
@@ -111,6 +113,7 @@ class Cfutils(object):
                 apps[key] = self.cf_query(endpoint)
             except CalledProcessError as error:
                 raise SystemExit(error.returncode, error.output)
+        #@TODO: Remove this print
         print apps
         return apps
 
@@ -125,6 +128,7 @@ class Cfutils(object):
                  status.
         """
         self.apps = self.get_all_apps_in_space(spaces)
+        #@TODO: Remove these prints and create a separate file
         for key in self.apps:
             print "Space: {}\n".format(key)
             for i in self.apps[key]["resources"]:
